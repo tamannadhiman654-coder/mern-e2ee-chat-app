@@ -17,7 +17,7 @@ import {
   validateLogin,
   validateMessage,
   handleValidationErrors
-} from '../middleware/validationmiddleware.js';
+} from '../middleware/validationMiddleware.js';
 
 const router = Router();
 
