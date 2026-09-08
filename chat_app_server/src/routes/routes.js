@@ -11,7 +11,7 @@ import {
 } from '../controller/friendcontroller.js';
 import { uploadImage } from '../controller/uploadcontroller.js';
 import { verifyToken } from '../middleware/authMiddleware.js';
-import { upload } from '../middleware/uploadMiddleware.js';
+import { upload } from '../middleware/uploadmiddleware.js';
 import {
   validateRegister,
   validateLogin,
