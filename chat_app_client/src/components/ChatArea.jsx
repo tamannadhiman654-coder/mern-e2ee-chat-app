@@ -37,7 +37,7 @@ export default function ChatArea({ activeFriend, onOpenSearch }) {
     const fetchHistory = async () => {
       setLoadingHistory(true);
       try {
-        const res = await fetch(`${url}api/messages/${friendId}`, {
+        const res = await fetch(`${url}/api/messages/${friendId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const data = await res.json();
@@ -120,7 +120,7 @@ export default function ChatArea({ activeFriend, onOpenSearch }) {
         socket.emit('send_encrypted_message', messagePayload);
       } else {
         // Fallback REST
-        const res = await fetch(`${url}api/messages`, {
+        const res = await fetch(`${url}/api/messages`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export default function ChatArea({ activeFriend, onOpenSearch }) {
     if (!friendId || !token) return;
     setDeletingChat(true);
     try {
-      const res = await fetch(`${url}api/messages/${friendId}`, {
+      const res = await fetch(`${url}/api/messages/${friendId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

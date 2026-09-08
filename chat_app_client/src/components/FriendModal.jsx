@@ -39,7 +39,7 @@ export default function FriendModal({ isOpen, onClose, initialTab = 'search', on
     if (!token) return;
     setLoadingRequests(true);
     try {
-      const res = await fetch(`${url}api/friends/requests`, {
+      const res = await fetch(`${url}/api/friends/requests`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -67,8 +67,8 @@ export default function FriendModal({ isOpen, onClose, initialTab = 'search', on
         setSearching(true);
         try {
           const endpoint = searchQuery.trim()
-            ? `${url}api/users/search?q=${encodeURIComponent(searchQuery.trim())}`
-            : `${url}api/users/all`;
+            ? `${url}/api/users/search?q=${encodeURIComponent(searchQuery.trim())}`
+            : `${url}/api/users/all`;
 
           const res = await fetch(endpoint, {
             headers: { Authorization: `Bearer ${token}` }
@@ -95,7 +95,7 @@ export default function FriendModal({ isOpen, onClose, initialTab = 'search', on
   const handleSendRequest = async (targetUserId) => {
     setActionLoading(targetUserId);
     try {
-      const res = await fetch(`${url}api/friends/request/${targetUserId}`, {
+      const res = await fetch(`${url}/api/friends/request/${targetUserId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -116,7 +116,7 @@ export default function FriendModal({ isOpen, onClose, initialTab = 'search', on
   const handleAcceptRequest = async (requestId) => {
     setActionLoading(requestId);
     try {
-      const res = await fetch(`${url}api/friends/accept/${requestId}`, {
+      const res = await fetch(`${url}/api/friends/accept/${requestId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       });
