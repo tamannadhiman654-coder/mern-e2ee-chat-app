@@ -23,6 +23,9 @@ app.use('/api', routes);
 
 // Global Error Handler
 app.use(errorHandler);
+app.get("/api/health",(req,res)=>{
+  res.send("backend is good working")
+})
 
 // Socket Initialization
 setupSocket(server);
