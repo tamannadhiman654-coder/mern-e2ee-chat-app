@@ -65,7 +65,11 @@ export default function AuthModal() {
         await login(email.trim(), password);
       }
     } catch (err) {
-      setError(err.message || 'Authentication error');
+      if (err.message === 'Failed to fetch' || err.name === 'TypeError') {
+        setError('Cannot connect to backend server. Please verify that the server is running on http://localhost:8080.');
+      } else {
+        setError(err.message || 'Authentication error');
+      }
     } finally {
       setLoading(false);
     }
