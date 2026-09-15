@@ -5,7 +5,7 @@ import { sendEmail } from '../utils/sendemail.js';
 
 export const register = async (req, res, next) => {
   try {
-    const { username, email, password, publicKey } = req.body;
+    const { username, email, password, publicKey, bio, profilePic } = req.body;
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
@@ -17,7 +17,9 @@ export const register = async (req, res, next) => {
       username,
       email,
       password: hashedPassword,
-      publicKey
+      publicKey: publicKey || '',
+      bio: bio || 'Hey there! I am using E2EE Chat.',
+      profilePic: profilePic || ''
     });
 
     const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET || 'secret_key', {
@@ -34,7 +36,15 @@ export const register = async (req, res, next) => {
     res.status(201).json({
       success: true,
       token,
-      user: { id: user._id, username: user.username, email: user.email, publicKey: user.publicKey }
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        publicKey: user.publicKey,
+        bio: user.bio,
+        profilePic: user.profilePic,
+        friends: user.friends || []
+      }
     });
   } catch (error) {
     next(error);
@@ -58,7 +68,15 @@ export const login = async (req, res, next) => {
     res.json({
       success: true,
       token,
-      user: { id: user._id, username: user.username, email: user.email, publicKey: user.publicKey }
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        publicKey: user.publicKey,
+        bio: user.bio,
+        profilePic: user.profilePic,
+        friends: user.friends || []
+      }
     });
   } catch (error) {
     next(error);

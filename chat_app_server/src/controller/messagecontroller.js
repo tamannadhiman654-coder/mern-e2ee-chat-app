@@ -1,4 +1,5 @@
 import Message from '../publickey/message.js';
+import { getIO, getSocketIdForUser } from '../socket/socket.js';
 
 export const getMessageHistory = async (req, res, next) => {
   try {
@@ -31,6 +32,34 @@ export const saveMessage = async (req, res, next) => {
     });
 
     res.status(201).json({ success: true, message });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteChat = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { receiverId } = req.params;
+
+    await Message.deleteMany({
+      $or: [
+        { sender: userId, receiver: receiverId },
+        { sender: receiverId, receiver: userId }
+      ]
+    });
+
+    try {
+      const io = getIO();
+      const receiverSocketId = getSocketIdForUser(receiverId);
+      if (io && receiverSocketId) {
+        io.to(receiverSocketId).emit('chat_cleared', { withUserId: userId });
+      }
+    } catch (err) {
+      console.warn('Socket notification skipped:', err.message);
+    }
+
+    res.json({ success: true, message: 'Chat history deleted successfully' });
   } catch (error) {
     next(error);
   }

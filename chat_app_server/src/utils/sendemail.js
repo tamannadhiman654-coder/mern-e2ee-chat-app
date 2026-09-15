@@ -14,6 +14,10 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendEmail = async ({ to, subject, text, html }) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('Email sending skipped (EMAIL_USER / EMAIL_PASS not set in .env)');
+    return null;
+  }
   try {
     const info = await transporter.sendMail({
       from: `"Realtime E2EE Chat" <${process.env.EMAIL_USER}>`,
